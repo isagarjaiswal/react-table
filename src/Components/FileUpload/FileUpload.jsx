@@ -7,7 +7,7 @@ import "./fileUpload.css"
 const FileUpload = () => {
 
   const [imageList, setImageList] = useState([]);
-  const cld = new Cloudinary({cloud: {cloudName: 'do0dwcmue'}});
+  // const cld = new Cloudinary({cloud: {cloudName: 'do0dwcmue'}});
 
   const defaultImage = "https://accordelectrotechnics.in/img/product/no-preview/no-preview.png"
   const onFileDrop = (files) => {

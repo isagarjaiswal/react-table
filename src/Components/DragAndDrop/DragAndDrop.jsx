@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './DragAndDrop.css'
 const DragAndDrop = ({ title = "Select File", onFileDrop }) => {
   const [isDragActive, setIsDragActive] = useState(false);
@@ -15,6 +15,7 @@ const DragAndDrop = ({ title = "Select File", onFileDrop }) => {
     e.preventDefault();
     setIsDragActive(true)
   }
+
   const onDragLeave = () => {
     setIsDragActive(false)
   }

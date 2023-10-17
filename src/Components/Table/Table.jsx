@@ -51,7 +51,9 @@ const Table = () => {
 
   useEffect(() => {
     setDataInState(apiData);
+     // eslint-disable-next-line
   }, []);
+  
   const resetColumnForm = () => {
     setAddColumnFormState({
       columnName: "",

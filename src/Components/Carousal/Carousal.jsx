@@ -36,7 +36,7 @@ const Carousel = ({ imageList = [], onDelete = defaultFunction, defaultImage = "
                                 imageList.length > 0
                                     ? (
                                         imageList.map((image, index) => {
-                                            return <img className='carousel-image' src={image.url} key={index} />
+                                            return <img alt="Carousel" className='carousel-image' src={image.url} key={index} />
                                         })
                                     ) : (
                                         <img src={defaultImage} alt='No images' />
