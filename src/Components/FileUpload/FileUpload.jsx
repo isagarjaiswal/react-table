@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import DragAndDrop from '../DragAndDrop/DragAndDrop'
 import Carousel from '../Carousal/Carousal';
-import {Cloudinary} from "@cloudinary/url-gen";
+// import {Cloudinary} from "@cloudinary/url-gen";
 import { uploadToCloudinary } from '../../Utils/cloudinary';
 import "./fileUpload.css"
 const FileUpload = () => {
