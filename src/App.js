@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import Table from './Components/Table/Table'
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom"
+import ExcelFilePage from './Pages/ExcelFilePage'
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   <BrowserRouter>
+   <NavLink to="/excel-file"> Excel </NavLink>
+
+     <Routes>
+        <Route path="/" element={<Table />} />
+        <Route path="/excel-file" element={<ExcelFilePage />} />
+     </Routes>
+   </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
