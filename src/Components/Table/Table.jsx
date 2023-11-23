@@ -92,7 +92,7 @@ const Table = () => {
     });
     setTableState(newTable);
   };
-  
+
   console.log({ tableState });
   const addColumnModalProps = {
     handleAddColumn,
@@ -103,7 +103,7 @@ const Table = () => {
   };
 
   const addRowAlertProps = {
-    message: "Please add atleast 1 column to add rows.",
+    message: "Please add atleast 1 column to add rows. ",
     setShowAddRowAlert
   };
 

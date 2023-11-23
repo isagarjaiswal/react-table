@@ -6,7 +6,7 @@ import ExcelFilePage from './Pages/ExcelFilePage'
 const App = () => {
   return (
    <BrowserRouter>
-   <NavLink to="/excel-file"> Excel </NavLink> &nbsp;&nbsp;&nbsp;
+   <NavLink to="/excel-file"> Excel </NavLink> &nbsp;&nbsp;
    <NavLink to="/"> Table </NavLink>
 
      <Routes>
