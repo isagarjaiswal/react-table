@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import './Table.css' ;
+import "./Table.css";
 import { apiData } from "../../Data/apiData.js";
 import FileUpload from "../FileUpload/FileUpload.jsx";
 import Pagination from "../Pagination/Pagination.jsx";
@@ -8,7 +8,7 @@ import Pagination from "../Pagination/Pagination.jsx";
 const Table = () => {
   const [tableState, setTableState] = useState({
     columns: [],
-    rows: []
+    rows: [],
   });
 
   const pageSize = 5;
@@ -19,7 +19,7 @@ const Table = () => {
   const [showAddRowAlert, setShowAddRowAlert] = useState(false);
   const [addColumnFormState, setAddColumnFormState] = useState({
     columnName: "",
-    columnComponentType: ""
+    columnComponentType: "",
   });
 
   const getRows = (items, columnTypes) => {
@@ -27,8 +27,8 @@ const Table = () => {
     return items.map((item) => {
       return {
         cells: columnNames.map((columnName) => ({
-          cellValue: item[columnName]
-        }))
+          cellValue: item[columnName],
+        })),
       };
     });
   };
@@ -36,12 +36,12 @@ const Table = () => {
   const getColumns = (columnTypes = {}) => {
     const typeMap = {
       input: Input,
-      textArea:TextArea,
-      fileUploadModal: FileUploadModal
-    }
+      textArea: TextArea,
+      fileUploadModal: FileUploadModal,
+    };
     return Object.keys(columnTypes).map((key) => ({
       columnName: key,
-      columnComponentType: typeMap[columnTypes[key]]
+      columnComponentType: typeMap[columnTypes[key]],
     }));
   };
 
@@ -55,12 +55,12 @@ const Table = () => {
 
   useEffect(() => {
     setDataInState(apiData);
-  },[]);
+  });
 
   const resetColumnForm = () => {
     setAddColumnFormState({
       columnName: "",
-      columnComponentType: ""
+      columnComponentType: "",
     });
   };
 
@@ -69,11 +69,11 @@ const Table = () => {
     const newTable = { ...tableState };
     newTable.columns.push({
       columnComponentType: addColumnFormState.columnComponentType,
-      columnName: columnName ?? `Col_${newTable.columns.length + 1}`
+      columnName: columnName ?? `Col_${newTable.columns.length + 1}`,
     });
     newTable.rows.forEach((rowObj, rowIdx) =>
       rowObj.cells.push({
-        cellValue: `Cell_${rowIdx}_${newTable.columns.length}`
+        cellValue: `Cell_${rowIdx}_${newTable.columns.length}`,
       })
     );
     setTableState(newTable);
@@ -87,8 +87,8 @@ const Table = () => {
     const newTable = { ...tableState };
     newTable.rows.push({
       cells: newTable.columns.map((columnHeader, colIdx) => ({
-        cellValue: `Cell_${newTable.rows.length}_${colIdx}`
-      }))
+        cellValue: `Cell_${newTable.rows.length}_${colIdx}`,
+      })),
     });
     setTableState(newTable);
   };
@@ -99,12 +99,12 @@ const Table = () => {
     resetColumnForm,
     setModalOpen,
     addColumnFormState,
-    setAddColumnFormState
+    setAddColumnFormState,
   };
 
   const addRowAlertProps = {
     message: "Please add atleast 1 column to add rows. ",
-    setShowAddRowAlert
+    setShowAddRowAlert,
   };
 
   return (
@@ -131,7 +131,6 @@ const Table = () => {
         </thead>
         <tbody>
           {rowPageData.map((rowObj, rowIdx) => {
-
             const { cells = [] } = rowObj;
             return (
               <tr>
@@ -157,7 +156,12 @@ const Table = () => {
           })}
         </tbody>
       </table>
-      <Pagination data={tableState.rows} pageSize={pageSize} pageOptions={pageOptions} onChange={(data)=> setRowPageData(data)}/>
+      <Pagination
+        data={tableState.rows}
+        pageSize={pageSize}
+        pageOptions={pageOptions}
+        onChange={(data) => setRowPageData(data)}
+      />
     </div>
   );
 };
@@ -194,7 +198,7 @@ const AddColumnModal = (props) => {
     resetColumnForm,
     setModalOpen,
     addColumnFormState,
-    setAddColumnFormState
+    setAddColumnFormState,
   } = props;
   return (
     <ModalComponent setModalOpen={setModalOpen}>
@@ -205,7 +209,7 @@ const AddColumnModal = (props) => {
           onChange={(e) =>
             setAddColumnFormState((formState) => ({
               ...formState,
-              columnName: e.target.value
+              columnName: e.target.value,
             }))
           }
         />
@@ -216,7 +220,7 @@ const AddColumnModal = (props) => {
           onChange={(e) =>
             setAddColumnFormState((formState) => ({
               ...formState,
-              columnComponentType: e.target.value
+              columnComponentType: e.target.value,
             }))
           }
         />
@@ -254,40 +258,36 @@ const AddRowAlert = (props) => {
   );
 };
 
+const FileUploadModal = () => {
+  const [fileUploadModal, setFileUploadModal] = useState(false);
 
-const FileUploadModal =() =>{
-  const [fileUploadModal, setFileUploadModal] = useState (false);
-
-  const  disableBodyScroll = () =>{
+  const disableBodyScroll = () => {
     const [body] = document.getElementsByTagName("body");
-    body.style.overflow ="hidden";
-  }
+    body.style.overflow = "hidden";
+  };
 
-  const enableBodyScroll = () =>{
+  const enableBodyScroll = () => {
     const [body] = document.getElementsByTagName("body");
-    body.style.overflow ="auto";
-  }
+    body.style.overflow = "auto";
+  };
 
-  useEffect(()=>{
-    window.scrollTo(0,0);
-    fileUploadModal ? disableBodyScroll() : enableBodyScroll()
-  })
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fileUploadModal ? disableBodyScroll() : enableBodyScroll();
+  });
 
-  return(
+  return (
     <>
-    <button onClick={()=> setFileUploadModal(true)}>upload image</button>
-    {
-      fileUploadModal && ( <div className="file-upload-model-div">
-        <ModalComponent setModalOpen = {setFileUploadModal}>
-          <FileUpload/>
-        </ModalComponent>
-
+      <button onClick={() => setFileUploadModal(true)}>upload image</button>
+      {fileUploadModal && (
+        <div className="file-upload-model-div">
+          <ModalComponent setModalOpen={setFileUploadModal}>
+            <FileUpload />
+          </ModalComponent>
         </div>
-
-      )
-    }
+      )}
     </>
-  )
-}
+  );
+};
 
 export default Table;

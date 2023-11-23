@@ -52,6 +52,7 @@ export const Carousal = ({
                       className={`carsousel-image`}
                       src={image.url}
                       key={index}
+                      alt="NoT Found"
                     />
                   );
                 })
@@ -60,7 +61,7 @@ export const Carousal = ({
                   <img
                     className="default-image"
                     src={defaultImage}
-                    alt="No Image"
+                    alt="NoT Found"
                   />
                 </div>
               )}
