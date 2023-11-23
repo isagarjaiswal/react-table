@@ -1,39 +1,44 @@
-import React, { useState } from 'react'
-import DragAndDrop from '../DragAndDrop/DragAndDrop'
-import Carousel from '../Carousal/Carousal';
-// import {Cloudinary} from "@cloudinary/url-gen";
+import React from 'react';
+import { DragAndDrop } from '../DragAndDrop/DragAndDrop';
+import { Carousal } from '../Carousal/Carousal';
+import { useState } from 'react';
 import { uploadToCloudinary } from '../../Utils/cloudinary';
-import "./fileUpload.css"
+
 const FileUpload = () => {
 
   const [imageList, setImageList] = useState([]);
-  // const cld = new Cloudinary({cloud: {cloudName: 'do0dwcmue'}});
 
-  const defaultImage = "https://accordelectrotechnics.in/img/product/no-preview/no-preview.png"
   const onFileDrop = (files) => {
-   setImageList([...imageList, ...files])
+    setImageList([...imageList, ...files])
+  };
+
+
+  const defaultImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png"
+
+
+  const onDelete = (files) => {
+    setImageList([...files])
     console.log('file dropped')
   }
-  const onDelete = async(files) => {
 
-     setImageList(files)
-     console.log('file dropped')
-   }
-   const onSave = async(file) => {
-     try{
-       await uploadToCloudinary(file.data);
-       alert("Image uploaded successfully")
-     }catch(err){
-       console.log(err);
-       alert("Unable to upload image");
-     }
-   }
+  const onSave = async (file) => {
+
+    try {
+      await uploadToCloudinary(file.data);
+      alert("Image Upload Successfilly");
+    } catch (err) {
+      alert("Unable to Upload image");
+    }
+
+  }
+
   return (
-    <span className='upload-image'>
-    <Carousel imageList={imageList} onDelete={onDelete} defaultImage={defaultImage} onSave={onSave} />
-    <DragAndDrop title='Drop any file' onFileDrop={onFileDrop} />
-    </span>
-  )
-}
+    <div>
 
-export default FileUpload
+      <Carousal imageList={imageList} onDelete={onDelete} defaultImage={defaultImage} onSave={onSave} />
+      <DragAndDrop onFileDrop={onFileDrop} title="Drop a File" />
+    </div>
+  )
+};
+
+export default FileUpload;

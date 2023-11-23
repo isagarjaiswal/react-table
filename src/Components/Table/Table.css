@@ -1,0 +1,40 @@
+
+.modal-div{
+    padding: 10px;
+    background-color: grey;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate( -50%, -50%);
+   }
+
+  .button-div{
+    display: flex;
+    justify-content: right;
+  }
+
+  .modal-close{
+    width: 70px;
+    height: 25px;
+    color: rgb(54, 54, 54);
+    font-weight: bold;
+  }
+
+  .modal-close:hover{
+    background-color: red;
+    color:white;
+    border: 2px solid white;
+
+  }
+
+
+  .file-upload-model-div{
+    position: absolute;
+    top: 50%;
+    left : 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100vh;
+    width: 100vw;
+    transform: translate(-50%, -50%);
+
+  }

@@ -1,20 +1,25 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { apiData } from "../../Data/apiData";
-import "../../App.css"
-import  FileUpload  from "../FileUpload/FileUpload";
+import './Table.css' ;
+import { apiData } from "../../Data/apiData.js";
+import FileUpload from "../FileUpload/FileUpload.jsx";
+import Pagination from "../Pagination/Pagination.jsx";
+
 const Table = () => {
   const [tableState, setTableState] = useState({
-    columns: [], // {columnName: '', columnComponentType: ''}
-    rows: [], // { cells: [] }
+    columns: [],
+    rows: []
   });
+
+  const pageSize = 5;
+  const pageOptions = 5;
+  const [rowPageData, setRowPageData] = useState([]);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [showAddRowAlert, setShowAddRowAlert] = useState(false);
-  // const [modalOpen, setModalOpen, ModalComponent] = useModal()
-  // const [columnName, setColumnName] = useState("");
   const [addColumnFormState, setAddColumnFormState] = useState({
     columnName: "",
-    columnComponentType: "",
+    columnComponentType: ""
   });
 
   const getRows = (items, columnTypes) => {
@@ -22,22 +27,21 @@ const Table = () => {
     return items.map((item) => {
       return {
         cells: columnNames.map((columnName) => ({
-          cellValue: item[columnName],
-        })),
+          cellValue: item[columnName]
+        }))
       };
     });
   };
 
   const getColumns = (columnTypes = {}) => {
-  const typeMap = {
-    input:Input,
-    textArea:TextArea,
-    fileUploadModal:FileUploadModal
-  }
-
+    const typeMap = {
+      input: Input,
+      textArea:TextArea,
+      fileUploadModal: FileUploadModal
+    }
     return Object.keys(columnTypes).map((key) => ({
       columnName: key,
-      columnComponentType: typeMap[columnTypes[key]] ,
+      columnComponentType: typeMap[columnTypes[key]]
     }));
   };
 
@@ -51,28 +55,25 @@ const Table = () => {
 
   useEffect(() => {
     setDataInState(apiData);
-     // eslint-disable-next-line
-  }, []);
-  
+  },[]);
+
   const resetColumnForm = () => {
     setAddColumnFormState({
       columnName: "",
-      columnComponentType: "",
+      columnComponentType: ""
     });
   };
 
   const addColumnPrompt = () => setModalOpen(true);
   const handleAddColumn = (columnName) => {
-    // const columnName = prompt('Add column Name');
     const newTable = { ...tableState };
     newTable.columns.push({
       columnComponentType: addColumnFormState.columnComponentType,
-      columnName: columnName ?? `Col_${newTable.columns.length + 1}`,
+      columnName: columnName ?? `Col_${newTable.columns.length + 1}`
     });
-    //  adding cells for columns
     newTable.rows.forEach((rowObj, rowIdx) =>
       rowObj.cells.push({
-        cellValue: `Cell_${rowIdx}_${newTable.columns.length}`,
+        cellValue: `Cell_${rowIdx}_${newTable.columns.length}`
       })
     );
     setTableState(newTable);
@@ -86,31 +87,30 @@ const Table = () => {
     const newTable = { ...tableState };
     newTable.rows.push({
       cells: newTable.columns.map((columnHeader, colIdx) => ({
-        cellValue: `Cell_${newTable.rows.length}_${colIdx}`,
-      })),
+        cellValue: `Cell_${newTable.rows.length}_${colIdx}`
+      }))
     });
     setTableState(newTable);
   };
+  
   console.log({ tableState });
   const addColumnModalProps = {
     handleAddColumn,
     resetColumnForm,
     setModalOpen,
     addColumnFormState,
-    setAddColumnFormState,
+    setAddColumnFormState
   };
 
   const addRowAlertProps = {
     message: "Please add atleast 1 column to add rows.",
-    setShowAddRowAlert,
+    setShowAddRowAlert
   };
 
-  // console.log({ addColumnFormState });
   return (
     <div>
       <button onClick={addColumnPrompt}>Add Column</button>
       <button onClick={handleAddRow}>Add Row</button>
-      {/* <button onClick={() => setModalOpen(true)}>Open Modal</button> */}
       {modalOpen && <AddColumnModal {...addColumnModalProps} />}
       {showAddRowAlert && <AddRowAlert {...addRowAlertProps} />}
 
@@ -130,7 +130,8 @@ const Table = () => {
           ))}
         </thead>
         <tbody>
-          {tableState.rows.map((rowObj, rowIdx) => {
+          {rowPageData.map((rowObj, rowIdx) => {
+
             const { cells = [] } = rowObj;
             return (
               <tr>
@@ -140,7 +141,6 @@ const Table = () => {
                   return (
                     <td>
                       <ComponentType
-                        // type={ComponentType}
                         onChange={(e) => {
                           const newTable = { ...tableState };
                           newTable.rows[rowIdx].cells[colIdx].cellValue =
@@ -157,6 +157,7 @@ const Table = () => {
           })}
         </tbody>
       </table>
+      <Pagination data={tableState.rows} pageSize={pageSize} pageOptions={pageOptions} onChange={(data)=> setRowPageData(data)}/>
     </div>
   );
 };
@@ -179,7 +180,7 @@ const ModalComponent = (props) => {
         type="button"
         onClick={() => setModalOpen(false)}
       >
-        Close
+        close
       </button>
       {children}
     </div>,
@@ -193,7 +194,7 @@ const AddColumnModal = (props) => {
     resetColumnForm,
     setModalOpen,
     addColumnFormState,
-    setAddColumnFormState,
+    setAddColumnFormState
   } = props;
   return (
     <ModalComponent setModalOpen={setModalOpen}>
@@ -204,7 +205,7 @@ const AddColumnModal = (props) => {
           onChange={(e) =>
             setAddColumnFormState((formState) => ({
               ...formState,
-              columnName: e.target.value,
+              columnName: e.target.value
             }))
           }
         />
@@ -215,7 +216,7 @@ const AddColumnModal = (props) => {
           onChange={(e) =>
             setAddColumnFormState((formState) => ({
               ...formState,
-              columnComponentType: e.target.value,
+              columnComponentType: e.target.value
             }))
           }
         />
@@ -252,25 +253,41 @@ const AddRowAlert = (props) => {
     </ModalComponent>
   );
 };
-const FileUploadModal = () => {
-  const [fileUploadModal, setFileUploadModal] = useState(false);
 
-  return (
+
+const FileUploadModal =() =>{
+  const [fileUploadModal, setFileUploadModal] = useState (false);
+
+  const  disableBodyScroll = () =>{
+    const [body] = document.getElementsByTagName("body");
+    body.style.overflow ="hidden";
+  }
+
+  const enableBodyScroll = () =>{
+    const [body] = document.getElementsByTagName("body");
+    body.style.overflow ="auto";
+  }
+
+  useEffect(()=>{
+    window.scrollTo(0,0);
+    fileUploadModal ? disableBodyScroll() : enableBodyScroll()
+  })
+
+  return(
     <>
-      <button onClick={() => setFileUploadModal(true)}>Upload Images</button>
-      {fileUploadModal && (
-        <ModalComponent setModalOpen={setFileUploadModal}>
-          <FileUpload />
+    <button onClick={()=> setFileUploadModal(true)}>upload image</button>
+    {
+      fileUploadModal && ( <div className="file-upload-model-div">
+        <ModalComponent setModalOpen = {setFileUploadModal}>
+          <FileUpload/>
         </ModalComponent>
-      )}
-    </>
-  );
-};
 
-// const [modalOpen, setModalOpen, ModalComponent] = useModal(AddColumnModal);
-// const useModal = (AddColumnModal) => {
-//   const [modalOpen, setModalOpen] = useState(false);
-//   return [modalOpen, setModalOpen, AddColumnModal];
-// };
+        </div>
+
+      )
+    }
+    </>
+  )
+}
 
 export default Table;
