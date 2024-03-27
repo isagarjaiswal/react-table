@@ -7,14 +7,17 @@
   font-family: "Roboto", sans-serif;
 }
 
-table > tbody > tr > td {
+
+/* table > tbody > tr > td {
   padding: 2px;
   background-color: grey;
 }
 table > thead > th {
   padding: 2px;
   background-color: rgb(103, 94, 94);
-}
+} */
+
+
 button {
   padding: 10px;
   border-radius: 5px;

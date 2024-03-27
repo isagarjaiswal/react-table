@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
-import "./Table.css";
-import { apiData } from "../../Data/apiData.js";
-import FileUpload from "../FileUpload/FileUpload.jsx";
-import Pagination from "../Pagination/Pagination.jsx";
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import './Table.css';
+import { apiData } from '../../Data/apiData.js';
+import FileUpload from '../FileUpload/FileUpload.jsx';
+import Pagination from '../Pagination/Pagination.jsx';
 
 const Table = () => {
   const [tableState, setTableState] = useState({
@@ -18,8 +18,8 @@ const Table = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showAddRowAlert, setShowAddRowAlert] = useState(false);
   const [addColumnFormState, setAddColumnFormState] = useState({
-    columnName: "",
-    columnComponentType: "",
+    columnName: '',
+    columnComponentType: '',
   });
 
   const getRows = (items, columnTypes) => {
@@ -56,12 +56,12 @@ const Table = () => {
   useEffect(() => {
     setDataInState(apiData);
     // eslint-disable-next-line
-  },[]);
+  }, []);
 
   const resetColumnForm = () => {
     setAddColumnFormState({
-      columnName: "",
-      columnComponentType: "",
+      columnName: '',
+      columnComponentType: '',
     });
   };
 
@@ -104,59 +104,61 @@ const Table = () => {
   };
 
   const addRowAlertProps = {
-    message: "Please add atleast 1 column to add rows. ",
+    message: 'Please add atleast 1 column to add rows. ',
     setShowAddRowAlert,
   };
 
   return (
-    <div>
-      <button onClick={addColumnPrompt}>Add Column</button>
-      <button onClick={handleAddRow}>Add Row</button>
+    <div className='main-container'>
+      <div className='btn-container'> <button onClick={addColumnPrompt}>Add Column</button>
+      <button onClick={handleAddRow}>Add Row</button></div>
+     
       {modalOpen && <AddColumnModal {...addColumnModalProps} />}
       {showAddRowAlert && <AddRowAlert {...addRowAlertProps} />}
-
-      <table>
-        <thead>
-          {tableState.columns.map((columnObj, idx) => (
-            <th>
-              <Input
-                onChange={(e) => {
-                  const newTable = { ...tableState };
-                  newTable.columns[idx].columnName = e.target.value;
-                  setTableState(newTable);
-                }}
-                value={columnObj.columnName}
-              />
-            </th>
-          ))}
-        </thead>
-        <tbody>
-          {rowPageData.map((rowObj, rowIdx) => {
-            const { cells = [] } = rowObj;
-            return (
-              <tr>
-                {cells.map((cellData, colIdx) => {
-                  const ComponentType =
-                    tableState.columns[colIdx].columnComponentType;
-                  return (
-                    <td>
-                      <ComponentType
-                        onChange={(e) => {
-                          const newTable = { ...tableState };
-                          newTable.rows[rowIdx].cells[colIdx].cellValue =
-                            e.target.value;
-                          setTableState(newTable);
-                        }}
-                        value={cellData.cellValue}
-                      />
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="table-container">
+        <table className="table-wrapper">
+          <thead>
+            {tableState.columns.map((columnObj, idx) => (
+              <th>
+                <Input
+                  onChange={(e) => {
+                    const newTable = { ...tableState };
+                    newTable.columns[idx].columnName = e.target.value;
+                    setTableState(newTable);
+                  }}
+                  value={columnObj.columnName}
+                />
+              </th>
+            ))}
+          </thead>
+          <tbody>
+            {rowPageData.map((rowObj, rowIdx) => {
+              const { cells = [] } = rowObj;
+              return (
+                <tr>
+                  {cells.map((cellData, colIdx) => {
+                    const ComponentType =
+                      tableState.columns[colIdx].columnComponentType;
+                    return (
+                      <td>
+                        <ComponentType
+                          onChange={(e) => {
+                            const newTable = { ...tableState };
+                            newTable.rows[rowIdx].cells[colIdx].cellValue =
+                              e.target.value;
+                            setTableState(newTable);
+                          }}
+                          value={cellData.cellValue}
+                        />
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <Pagination
         data={tableState.rows}
         pageSize={pageSize}
@@ -263,13 +265,13 @@ const FileUploadModal = () => {
   const [fileUploadModal, setFileUploadModal] = useState(false);
 
   const disableBodyScroll = () => {
-    const [body] = document.getElementsByTagName("body");
-    body.style.overflow = "hidden";
+    const [body] = document.getElementsByTagName('body');
+    body.style.overflow = 'hidden';
   };
 
   const enableBodyScroll = () => {
-    const [body] = document.getElementsByTagName("body");
-    body.style.overflow = "auto";
+    const [body] = document.getElementsByTagName('body');
+    body.style.overflow = 'auto';
   };
 
   useEffect(() => {
